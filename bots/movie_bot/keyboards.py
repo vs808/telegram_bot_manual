@@ -1,19 +1,16 @@
 from telegram import InlineKeyboardButton, InlineKeyboardMarkup
 
+from constants import NUMBER_OF_BUTTONS_IN_ROW
+
 
 def get_keyboard_with_genres(genres: dict[str, str]) -> InlineKeyboardMarkup:
     keyboard = []
-    index_of_button = 0
+    row = []
     for genre in genres:
-        if index_of_button % 2 == 0:
-            keyboard.append(
-                [InlineKeyboardButton(genre, callback_data=genres[genre])]
-            )
-        else:
-            keyboard[index_of_button // 2].append(
-                InlineKeyboardButton(genre, callback_data=genres[genre])
-            )
-        index_of_button += 1
+        row.append(InlineKeyboardButton(genre, callback_data=genres[genre]))
+        if len(row) == NUMBER_OF_BUTTONS_IN_ROW:
+            keyboard.append(row)
+            row = []
     return InlineKeyboardMarkup(keyboard)
 
 
